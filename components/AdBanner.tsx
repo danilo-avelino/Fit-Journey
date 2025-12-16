@@ -1,5 +1,3 @@
-
-/// <reference types="nativewind/types" />
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useGameStore } from '../store/gameStore';

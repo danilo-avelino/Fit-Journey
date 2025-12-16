@@ -1,5 +1,3 @@
-
-/// <reference types="nativewind/types" />
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import { ScreenContainer, GoldButton, Card, ThemedInput } from '../../components/ThemedComponents';

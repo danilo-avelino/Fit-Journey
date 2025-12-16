@@ -1,4 +1,4 @@
-/// <reference types="nativewind/types" />
+import React from 'react';
 import { Tabs } from 'expo-router';
 import { View } from 'react-native';
 import { Home, Dumbbell, Users, User, ShoppingBag } from 'lucide-react-native';
@@ -43,13 +43,30 @@ export default function TabLayout() {
         }}
       />
       
-      {/* Central Floating Button Placeholder */}
+      {/* Central Floating Button */}
       <Tabs.Screen
         name="center"
         options={{
           title: '',
           tabBarIcon: () => (
-            <View className="w-16 h-16 bg-gold-500 rounded-full items-center justify-center -mt-8 shadow-lg shadow-gold-500/30 border-4 border-teal-950">
+            <View 
+                style={{
+                    width: 64, 
+                    height: 64, 
+                    backgroundColor: '#D4AF37', 
+                    borderRadius: 32, 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    marginTop: -32,
+                    borderWidth: 4,
+                    borderColor: '#0B1E26',
+                    shadowColor: '#D4AF37',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 4.65,
+                    elevation: 8
+                }}
+            >
               <User size={32} stroke="#0B1E26" fill="#0B1E26" />
             </View>
           ),

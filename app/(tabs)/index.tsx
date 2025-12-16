@@ -1,4 +1,3 @@
-/// <reference types="nativewind/types" />
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { ScreenContainer, Card, GoldButton } from '../../components/ThemedComponents';
@@ -14,7 +13,11 @@ export default function Dashboard() {
 
   return (
     <ScreenContainer className="pt-14 px-0 pb-0">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100, paddingHorizontal: 20 }}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{ paddingBottom: 120, paddingHorizontal: 20 }}
+        style={{ flex: 1 }}
+      >
         
         {/* Header */}
         <View className="flex-row justify-between items-center mb-6">

@@ -1,4 +1,3 @@
-/// <reference types="nativewind/types" />
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
@@ -19,7 +18,7 @@ export const ProgressRing = ({ radius, stroke, progress, imageUri, level }: Prog
   return (
     <View className="items-center justify-center relative">
       <View style={{ width: radius * 2, height: radius * 2 }} className="relative items-center justify-center">
-        <Svg height={radius * 2} width={radius * 2} className="absolute rotate-[-90deg]">
+        <Svg height={radius * 2} width={radius * 2} style={{ position: 'absolute', transform: [{ rotate: '-90deg' }] }}>
           {/* Background Circle */}
           <Circle
             stroke="#12303B"
@@ -33,7 +32,7 @@ export const ProgressRing = ({ radius, stroke, progress, imageUri, level }: Prog
           <Circle
             stroke="#4FD1C5" // Teal Bright
             strokeWidth={stroke}
-            strokeDasharray={circumference + ' ' + circumference}
+            strokeDasharray={`${circumference} ${circumference}`}
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round"
             fill="transparent"

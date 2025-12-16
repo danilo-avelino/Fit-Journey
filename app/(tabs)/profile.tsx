@@ -1,4 +1,3 @@
-/// <reference types="nativewind/types" />
 import React from 'react';
 import { View, Text, ScrollView, Switch, Image, TouchableOpacity } from 'react-native';
 import { ScreenContainer, Card, GoldButton } from '../../components/ThemedComponents';
