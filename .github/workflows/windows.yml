@@ -1,0 +1,59 @@
+name: Windows
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, mosaico/download-windows]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Check TypeScript
+        run: npm run typecheck
+      - name: Run unit tests
+        run: npm test
+      - name: Build application
+        run: npm run build
+      - name: Test the Electron application
+        run: npm run test:e2e
+      - name: Package Windows installers
+        run: npm exec -- electron-builder --win nsis portable --x64
+      - name: Compute download hashes
+        run: node scripts/checksums.mjs
+      - name: Upload integration test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mosaico-Windows-test-diagnostics
+          if-no-files-found: ignore
+          retention-days: 7
+          path: |
+            playwright-report/
+            test-results/
+      - name: Upload Windows build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Mosaico-Windows-x64
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            release/*.exe
+            release/SHA256SUMS.txt
