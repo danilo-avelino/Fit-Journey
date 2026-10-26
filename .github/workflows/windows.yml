@@ -34,8 +34,14 @@ jobs:
         run: npm run build
       - name: Test the Electron application
         run: npm run test:e2e
-      - name: Package Windows installers
-        run: npm exec -- electron-builder --win nsis portable --x64
+      - name: Package complete Windows application
+        run: npm exec -- electron-builder --win --dir --x64 --config.electronDist=node_modules/electron/dist --config.win.signAndEditExecutable=false
+      - name: Create downloadable ZIP
+        shell: pwsh
+        run: |
+          if (!(Test-Path release/win-unpacked/Mosaico.exe)) { throw 'Windows executable is missing.' }
+          if (!(Test-Path release/win-unpacked/resources/app.asar)) { throw 'Application bundle is missing.' }
+          Compress-Archive -Path release/win-unpacked/* -DestinationPath release/Mosaico-Windows-1.0.0.zip -CompressionLevel Optimal
       - name: Compute download hashes
         run: node scripts/checksums.mjs
       - name: Upload integration test diagnostics
@@ -55,5 +61,5 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           path: |
-            release/*.exe
+            release/Mosaico-Windows-*.zip
             release/SHA256SUMS.txt
