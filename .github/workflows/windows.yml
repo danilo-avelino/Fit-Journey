@@ -41,7 +41,8 @@ jobs:
         run: |
           if (!(Test-Path release/win-unpacked/Mosaico.exe)) { throw 'Windows executable is missing.' }
           if (!(Test-Path release/win-unpacked/resources/app.asar)) { throw 'Application bundle is missing.' }
-          Compress-Archive -Path release/win-unpacked/* -DestinationPath release/Mosaico-Windows-1.0.0.zip -CompressionLevel Optimal
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          Compress-Archive -Path release/win-unpacked/* -DestinationPath "release/Mosaico-Windows-$version.zip" -CompressionLevel Optimal
       - name: Compute download hashes
         run: node scripts/checksums.mjs
       - name: Upload integration test diagnostics

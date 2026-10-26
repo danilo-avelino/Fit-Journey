@@ -1,6 +1,6 @@
 {
   "name": "mosaico-desktop",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Painéis web interativos em tela cheia para Windows, com Chromium.",
   "author": "Mosaico",

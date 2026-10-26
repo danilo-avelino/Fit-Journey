@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { readFile, stat, writeFile } from 'node:fs/promises';
 import { ConfigStore } from './config-store';
 import { PanelManager } from './panel-manager';
+import { chromiumUserAgent } from './browser-identity';
 import { validateWorkspace } from '../shared/workspace';
 import type { AppConfig, AppState, Mode, PanelStatus, Workspace } from '../shared/types';
 
@@ -241,17 +242,19 @@ async function createWindow(): Promise<void> {
   window.webContents.on('will-navigate', event => event.preventDefault());
   window.webContents.on('will-redirect', event => event.preventDefault());
   window.webContents.on('will-attach-webview', event => event.preventDefault());
-  panels = new PanelManager(window, publishPanel, handleShortcut);
-  panels.reconcile(config.panels);
-  installIPC();
-
   const pageSession = session.fromPartition('persist:mosaico-pages');
+  // Configure the persistent session before any page, redirect, worker or popup
+  // starts. Do not clear cookies: existing logins must survive this update.
+  pageSession.setUserAgent(chromiumUserAgent(pageSession.getUserAgent()));
   pageSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
   pageSession.setPermissionCheckHandler(() => false);
   // HTTP(S) content cannot initiate an executable download silently.
   pageSession.on('will-download', (_event, item) => {
     item.setSaveDialogOptions({ title: 'Salvar arquivo da página', defaultPath: join(app.getPath('downloads'), item.getFilename()) });
   });
+  panels = new PanelManager(window, publishPanel, handleShortcut);
+  panels.reconcile(config.panels);
+  installIPC();
 
   const icon = nativeImage.createFromPath(join(app.getAppPath(), 'build', 'icon.png')).resize({ width: 24, height: 24 });
   if (!icon.isEmpty()) {

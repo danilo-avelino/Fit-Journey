@@ -21,7 +21,7 @@ Mais páginas consomem mais memória e processamento. O número de divisões vi�
 
 O alvo de distribuição é **Windows 10 ou 11, de 64 bits**. Gere o instalador com as instruções abaixo ou obtenha o artefato de uma execução bem-sucedida do workflow `Windows` do repositório.
 
-1. Execute `Mosaico-Setup-1.0.0.exe` e abra o aplicativo.
+1. Execute `Mosaico-Setup-1.0.1.exe` e abra o aplicativo.
 2. Adicione a primeira página, informando o endereço do site.
 3. Selecione um painel para dividi-lo ou alterar suas configurações.
 4. Arraste as divisórias para ajustar o layout e inicie a exibição.
@@ -75,8 +75,8 @@ npm run dist:win
 
 Os artefatos são gravados em `release/`:
 
-- `Mosaico-Setup-1.0.0.exe`: instalador recomendado.
-- `Mosaico-Portable-1.0.0.exe`: execução portátil, sem início automático.
+- `Mosaico-Setup-1.0.1.exe`: instalador recomendado.
+- `Mosaico-Portable-1.0.1.exe`: execução portátil, sem início automático.
 
 O workflow [Windows](.github/workflows/windows.yml) executa verificações, gera os executáveis e anexa os arquivos e seus hashes SHA-256 à execução do GitHub Actions. Ele não publica uma release automaticamente. A geração do instalador não substitui os testes manuais de instalação e inicialização no Windows.
 
@@ -92,8 +92,8 @@ Não há servidor de aplicação, conta Mosaico ou credencial externa obrigatór
 
 ## Pacote ZIP para Windows
 
-O pacote `release/Mosaico-Windows-1.0.0.zip` contém o aplicativo completo. Extraia a pasta **Mosaico** para um local permanente, por exemplo `Documentos\Mosaico`, e execute `Mosaico.exe`. Mantenha os arquivos juntos e não execute dentro do ZIP. Essa versão permite **Abrir com o Windows**; não mova a pasta após ativar a opção.
+O pacote `release/Mosaico-Windows-1.0.1.zip` contém o aplicativo completo. Extraia a pasta **Mosaico** para um local permanente, por exemplo `Documentos\Mosaico`, e execute `Mosaico.exe`. Mantenha os arquivos juntos e não execute dentro do ZIP. Essa versão permite **Abrir com o Windows**; não mova a pasta após ativar a opção.
 
 Em **Configurações → Monitor ao iniciar com o Windows**, selecione o monitor. A escolha é salva, aplicada imediatamente e restaurada na próxima abertura. Se o monitor não estiver conectado, o principal é usado.
 
-Validação nesta entrega: TypeScript, 23 testes unitários e cinco testes de integração Electron passaram no Linux. As páginas reais foram verificadas em display virtual, inclusive arraste e restauração de sessões/monitor. Os testes gráficos usam sandbox desativado somente no contêiner de testes por limitação de namespaces; a aplicação distribuída mantém o sandbox habilitado. Inicialização após login, múltiplos monitores físicos e instalação NSIS ainda precisam da validação Windows descrita no guia.
+Validação nesta entrega: TypeScript, 25 testes unitários e seis testes de integração Electron passaram no Linux. As páginas reais foram verificadas em display virtual, inclusive arraste e restauração de sessões/monitor. Os testes gráficos usam sandbox desativado somente no contêiner de testes por limitação de namespaces; a aplicação distribuída mantém o sandbox habilitado. Inicialização após login, múltiplos monitores físicos e instalação NSIS ainda precisam da validação Windows descrita no guia.

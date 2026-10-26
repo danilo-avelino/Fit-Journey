@@ -2,9 +2,9 @@
 
 ## Instalação
 
-Use Windows 10 ou 11 de 64 bits e o instalador `Mosaico-Setup-1.0.0.exe`. O Chromium acompanha o aplicativo; não é preciso instalar o Google Chrome nem configurar um servidor.
+Use Windows 10 ou 11 de 64 bits e o instalador `Mosaico-Setup-1.0.1.exe`. O Chromium acompanha o aplicativo; não é preciso instalar o Google Chrome nem configurar um servidor.
 
-O instalador é a opção recomendada para um monitor permanente. A distribuição portátil `Mosaico-Portable-1.0.0.exe` serve para executar o aplicativo sem instalação, mas não oferece início automático com o Windows.
+O instalador é a opção recomendada para um monitor permanente. A distribuição portátil `Mosaico-Portable-1.0.1.exe` serve para executar o aplicativo sem instalação, mas não oferece início automático com o Windows.
 
 Se o arquivo não estiver assinado digitalmente, o SmartScreen poderá exibir um aviso. Para distribuir o aplicativo publicamente, assine os executáveis com um certificado de publicação. O arquivo `SHA256SUMS.txt` do workflow permite conferir se o download corresponde ao artefato gerado; ele não equivale a uma assinatura digital.
 
@@ -69,3 +69,11 @@ Esta lista documenta verificações que exigem uma sessão real do Windows. A ex
 - [ ] Conferir escala de exibição do Windows em 100%, 125% e 150%.
 - [ ] Testar a versão portátil e confirmar que ela não oferece início automático.
 - [ ] Encerrar, reabrir, atualizar e desinstalar o aplicativo.
+
+## Atualização 1.0.1: identificação do navegador
+
+Os painéis passam a informar a versão real do Chromium, sem os identificadores adicionais Electron/Mosaico. Isso corrige a identificação como navegador desconhecido que pode causar avisos de atualização em sites como o WhatsApp Web; a compatibilidade com o serviço ainda precisa ser confirmada no computador do usuário. Não foi feita uma simulação de versão mais nova nem removido o sandbox.
+
+Feche o Mosaico, extraia a versão nova e substitua os arquivos da pasta do aplicativo. Preserve `%APPDATA%\Mosaico`, onde ficam layouts e sessões. Abra novamente `https://web.whatsapp.com/`. A atualização mantém a pasta de dados existente.
+
+Programas nativos do Windows ainda não podem ser incorporados aos painéis. Essa integração depende do tipo de janela, permissões e DPI do programa; não é garantida para aplicativos da Microsoft Store.

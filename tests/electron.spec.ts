@@ -18,6 +18,10 @@ test.beforeAll(async () => {
       request.socket.destroy();
       return;
     }
+    if (path === '/identity') {
+      response.end(JSON.stringify({ userAgent: request.headers['user-agent'] }));
+      return;
+    }
     const title = path === '/two' ? 'Página dois' : path === '/next' ? 'Próxima página' : 'Página um';
     response.end(`<!doctype html><html lang="pt-BR"><head><title>${title}</title></head>
       <body style="font:20px sans-serif;background:#eef7f5;padding:24px">
@@ -239,4 +243,21 @@ test('rejeita endereços perigosos e comunica falha de carregamento sem perder o
   value.panels[0].url = `${origin}/one`;
   await setWorkspace(page, value);
   expect(await nativeScript<string>(app, '/one', 'document.querySelector("h1").textContent')).toBe('Página um');
+});
+
+
+test('identifica páginas, requisições e popups como Chromium sem inventar a versão', async () => {
+  const { app, page } = await launch(await profile());
+  const value = workspace();
+  value.panels[0].url = `${origin}/identity`;
+  await setWorkspace(page, value);
+  const identity = await nativeScript<{userAgent:string; server:string}>(app, '/identity', '({userAgent:navigator.userAgent,server:JSON.parse(document.body.innerText).userAgent})');
+  expect(identity.userAgent).not.toMatch(/Electron|Mosaico/i);
+  expect(identity.server).toBe(identity.userAgent);
+  const chromeVersion = await app.evaluate(() => process.versions.chrome);
+  expect(identity.userAgent).toContain(`Chrome/${chromeVersion}`);
+  await nativeScript(app, '/two', 'document.querySelector("#popup").click()');
+  await expect.poll(() => app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows().length)).toBe(2);
+  const popupUA = await app.evaluate(({BrowserWindow}) => BrowserWindow.getAllWindows().find(win => win.getParentWindow())!.webContents.getUserAgent());
+  expect(popupUA).toBe(identity.userAgent);
 });
